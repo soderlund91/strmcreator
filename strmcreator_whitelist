@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+import re
+import requests
+from pathlib import Path
+
+# ================= SETTINGS =================
+
+M3U_URL = "REPLACE_ME" # Link to you m3u file.
+OUTPUT_FILE = "group_whitelist.txt" # Name of the whitlist file
+
+# ===========================================
+
+TIMEOUT = 30
+
+def get_attr(extinf: str, attr: str):
+    m = re.search(fr'{attr}="([^"]*)"', extinf)
+    return m.group(1) if m else ""
+
+def load_previous_whitelist(path: Path):
+    """
+    Returnerar:
+      { group_name : is_commented (bool) }
+    """
+    entries = {}
+    if not path.exists():
+        return entries
+
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            raw = line.strip()
+            if not raw or raw.startswith("# One group"):
+                continue
+
+            is_commented = raw.startswith("#")
+            content = raw.lstrip("#").strip()
+
+            # ta bort inline-kommentarer (inkl NEW GROUP)
+            group = content.split("#", 1)[0].strip()
+            if group:
+                entries[group] = is_commented
+
+    return entries
+
+print("Downloading M3U...")
+resp = requests.get(M3U_URL, timeout=TIMEOUT)
+resp.raise_for_status()
+
+current_groups = set()
+
+for line in resp.text.splitlines():
+    if line.startswith("#EXTINF"):
+        group = get_attr(line, "group-title")
+        if group:
+            current_groups.add(group.strip())
+
+current_groups = sorted(current_groups)
+
+out_path = Path(OUTPUT_FILE)
+previous_entries = load_previous_whitelist(out_path)
+
+new_count = 0
+
+with open(out_path, "w", encoding="utf-8") as f:
+    f.write("# One group-title per line\n")
+    f.write("# Comment out groups you do NOT want\n")
+    f.write("# New groups are disabled by default\n\n")
+
+    for group in current_groups:
+        if group in previous_entries:
+            # gammal grupp → behåll kommentarstatus, ta bort NEW GROUP
+            if previous_entries[group]:
+                f.write(f"#{group}\n")
+            else:
+                f.write(f"{group}\n")
+        else:
+            # ny grupp → kommenterad + markerad
+            f.write(f"#{group} #NEW GROUP\n")
+            new_count += 1
+
+print(
+    f"Done: {len(current_groups)} groups, "
+    f"{new_count} new"
+)
