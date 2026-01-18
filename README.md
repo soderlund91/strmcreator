@@ -4,7 +4,9 @@ I'm no coder so i'm lacking the ability to streamline the code.
 ======HOW TO USE======
 1. Edit the settings in "strmcreator_whitelist"
 2. Run "strmcreator_whitelist.py" using
+```
 python3 strmcreator_whitelist.py
+```
 
 It will create a new textfile containing every group from you m3u playlist. 
 As default all groups will be disabled.
@@ -14,6 +16,8 @@ As default all groups will be disabled.
 4. Edit the settings in "strmcreator_main.py". See comments for some guide/help.
 
 5. run "strmcreator_main.py" using
+```
 python3 strmcreator_whitelist.py
+```
 
 Your .strm files should have been created and sorted accoring to your settings. 
