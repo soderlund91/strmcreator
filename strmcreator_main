@@ -19,14 +19,12 @@ WHITELIST_FILE = "group_whitelist.txt" #Name of whitlist. Run strmcreator_wl.py 
 # Choose what types of media you want to download. 
 ENABLE_MOVIES = True        
 ENABLE_SERIES = True
-ENABLE_LIVE   = False
 
 
 # ------ SUB-FOLDERS ------
 FOLDER_MAP = {
     "movies": "Movies",
     "series": "Series",
-    "live":   "TVChannels",
 }
 
 # Use season folders
@@ -97,18 +95,35 @@ def load_whitelist(path):
             allowed.add(line)
     return allowed
 
+SERIES_EP_REGEX = re.compile(r'\bS\d{1,2}E\d{1,2}\b', re.IGNORECASE)
 
 def classify(extinf):
-    tvg_id = get_attr(extinf, "tvg-id")
-    group  = get_attr(extinf, "group-title")
+    group = get_attr(extinf, "group-title")
+    tvg_name = get_attr(extinf, "tvg-name")
 
-    if tvg_id:
-        return "live"
-    if group.startswith("Series:"):
-        return "series"
-    if group.startswith("VOD:"):
+    # Movies (explicit VOD)
+    if group and "VOD" in group.upper():
         return "movies"
+
+    # Series (episode pattern)
+    if tvg_name and SERIES_EP_REGEX.search(tvg_name):
+        return "series"
+
+    # Ignore everything else (incl live TV)
     return None
+
+# ==DO NOT USE (still here for fallback)
+#def classify(extinf):
+#    tvg_id = get_attr(extinf, "tvg-id")
+#    group  = get_attr(extinf, "group-title")
+#
+#    if tvg_id:
+#        return "live"
+#    if group.startswith("Series:"):
+#        return "series"
+#    if group.startswith("VOD:"):
+#        return "movies"
+#    return None
 
 
 def normalize_name(name):
@@ -272,8 +287,7 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
 
         if (
             (content_type == "movies" and not ENABLE_MOVIES) or
-            (content_type == "series" and not ENABLE_SERIES) or
-            (content_type == "live"   and not ENABLE_LIVE)
+            (content_type == "series" and not ENABLE_SERIES)
         ):
             continue
 
