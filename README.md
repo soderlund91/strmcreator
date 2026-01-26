@@ -32,7 +32,7 @@ services:
     volumes:
       - ./config:/config
       - ./data:/data
-      - ./media:/media  # Change to where you want your media
+      - ./media:/media  # Change to where you want your media (left side of the : )
     environment:
       - TZ=UTC
 ```
