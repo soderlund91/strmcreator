@@ -39,11 +39,11 @@ services:
 3. Start the container:
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 4. Go to
 ```
-http://localhos:8585/ui
+http://localhos:8585/ui # Or the ip of the host. REMEMBER THE /UI
 ```
 5. Enter your URL for your m3u file and hit save.
 6. Update groups and mark what you whant. (This code is only tested with movies and series, not live channels)
