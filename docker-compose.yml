@@ -1,0 +1,13 @@
+services:
+  strmcreator:
+    image: soderlund91/strmcreator:latest
+    container_name: strmcreator
+    restart: unless-stopped
+    ports:
+      - "8585:8000"
+    volumes:
+      - ./config:/config
+      - ./data:/data
+      - ./media:/media  # Change to where you want your media
+    environment:
+      - TZ=UTC
