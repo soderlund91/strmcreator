@@ -1,6 +1,6 @@
 services:
   strmcreator:
-    image: soderlund91/strmcreator:latest
+    image: soderlund91/strm-creator:latest
     container_name: strmcreator
     restart: unless-stopped
     ports:
@@ -11,3 +11,4 @@ services:
       - ./media:/media  # Change to where you want your media (left side of the : )
     environment:
       - TZ=UTC
+
