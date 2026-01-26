@@ -24,7 +24,7 @@ Running STRM Creator via Docker Compose is the recommended method.
 ```
 services:
   strmcreator:
-    image: soderlund91/strmcreator:latest
+    image: soderlund91/strm-creator:latest
     container_name: strmcreator
     restart: unless-stopped
     ports:
