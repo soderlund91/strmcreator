@@ -1,6 +1,6 @@
 STRM Creator is a high-performance tool designed to transform IPTV playlists (M3U) into .strm files. This allows you to integrate your IPTV provider's content directly into media libraries like Plex, Jellyfin, or Emby as if they were local files.
 
-Made with a lot of helt from ChatGPT and Google Gemini.
+Made with a lot of help from ChatGPT and Google Gemini.
 
 Key Features
 
