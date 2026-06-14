@@ -4,9 +4,9 @@
 
 STRM Creator is a high-performance tool designed to transform IPTV playlists (M3U) into .strm files. This allows you to integrate your IPTV provider's content directly into media libraries like Plex, Jellyfin, or Emby as if they were local files.
 
-Made with a lot of help from ChatGPT and Google Gemini.
+Made with a lot of help from ChatGPT, Google Gemini and Claude Code.
 
-Key Features
+### Key Features
 
 🚀 High Performance: Parallel processing engine capable of handling thousands of streams in seconds.
 
@@ -18,7 +18,14 @@ Key Features
 
 🌐 Web UI: User-friendly interface to trigger runs and monitor logs in real-time.
 
-🛠 Installation (Docker Compose)
+### Supported providers
+* N1
+* Apollo Group TV
+* Rapid TV
+> [!NOTE]
+> More providers may and will still work, these are the ones that have been tested and confirmed. 
+
+## 🛠 Installation (Docker Compose)
 Running STRM Creator via Docker Compose is the recommended method.
 
 1. Create a folder for the project.
@@ -50,7 +57,7 @@ docker compose up -d
 http://localhost:8585/ui    # Or the ip of the host.
                             
 ```
-REMEMBER THE /UI
+REMEMBER TO ADD THE ```/ui```
 
 5. Enter your URL for your m3u file and hit save.
 6. Update groups and mark what you whant. (This code is only tested with movies and series, not live channels)
